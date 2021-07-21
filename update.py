@@ -6,7 +6,7 @@ from describe import describe_cloud_run
 from utils import run_shell_command, get_configuration_value, generate_cloud_run_names
 
 
-def deploy_gcloud_run(bento_bundle_path, deployment_name, config_json):
+def update_gcloud_run(bento_bundle_path, deployment_name, config_json):
     bundle_metadata = load_bento_service_metadata(bento_bundle_path)
     cloud_run_config = get_configuration_value(config_json)
 
@@ -23,7 +23,7 @@ def deploy_gcloud_run(bento_bundle_path, deployment_name, config_json):
         ["gcloud", "builds", "submit", bento_bundle_path, "--tag", gcr_tag]
     )
 
-    print(f"Deploying [{img_name}] to Cloud Run Service [{service_name}]")
+    print(f"Updating [{img_name}] to Cloud Run Service [{service_name}]")
     port = str(cloud_run_config.get("port", 5000))
     run_shell_command(
         [
@@ -47,7 +47,8 @@ def deploy_gcloud_run(bento_bundle_path, deployment_name, config_json):
         ]
     )
 
-    print("Deployment Successful!")
+    # show endpoint URL and other info
+    print("Updation Successful!")
     describe_cloud_run(deployment_name)
 
 
@@ -61,4 +62,4 @@ if __name__ == "__main__":
     deployment_name = sys.argv[2]
     config_json = sys.argv[3] if len(sys.argv) == 4 else "cloud_run_config.json"
 
-    deploy_gcloud_run(bento_bundle_path, deployment_name, config_json)
+    update_gcloud_run(bento_bundle_path, deployment_name, config_json)

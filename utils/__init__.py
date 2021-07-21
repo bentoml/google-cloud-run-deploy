@@ -4,7 +4,6 @@ import subprocess
 
 
 def run_shell_command(command, cwd=None, env=None, shell_mode=False):
-    print(command)
     proc = subprocess.Popen(
         command,
         stdout=subprocess.PIPE,
@@ -15,7 +14,6 @@ def run_shell_command(command, cwd=None, env=None, shell_mode=False):
     )
     stdout, stderr = proc.communicate()
     if proc.returncode == 0:
-        import pdb; pdb.set_trace()
         try:
             return json.loads(stdout.decode("utf-8")), stderr.decode("utf-8")
         except json.JSONDecodeError:
@@ -32,7 +30,9 @@ def get_configuration_value(config_file):
     return configuration
 
 
-def generate_cloud_run_names(deployment_name, project_id, bento_name, bento_version):
+def generate_cloud_run_names(
+    deployment_name, project_id=None, bento_name=None, bento_version=None
+):
     "Generate the service name and grc tag that is used for deployments"
 
     service_name = re.sub("[^a-z0-9-]", "-", deployment_name.lower())
