@@ -28,4 +28,4 @@ if __name__ == "__main__":
         raise Exception("Please provide deployment_name")
     deployment_name = sys.argv[1]
 
-    describe_cloud_run(deployment_name, return_json=True)
+    describe_cloud_run(deployment_name)

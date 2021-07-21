@@ -24,7 +24,6 @@ def deploy_gcloud_run(bento_bundle_path, deployment_name, config_json):
     )
 
     print(f"Deploying [{img_name}] to Cloud Run Service [{service_name}]")
-    port = str(cloud_run_config.get("port", 5000))
     run_shell_command(
         [
             "gcloud",
@@ -34,7 +33,7 @@ def deploy_gcloud_run(bento_bundle_path, deployment_name, config_json):
             "--image",
             gcr_tag,
             "--port",
-            port,
+            str(cloud_run_config.get("port")),
             "--memory",
             cloud_run_config["memory"],
             "--cpu",
@@ -43,7 +42,9 @@ def deploy_gcloud_run(bento_bundle_path, deployment_name, config_json):
             str(cloud_run_config["min_instances"]),
             "--max-instances",
             str(cloud_run_config["max_instances"]),
-            "--allow-unauthenticated",
+            "--allow-unauthenticated"
+            if cloud_run_config["allow_unauthenticated"]
+            else "--no-allow-unauthenticated",
         ]
     )
 
