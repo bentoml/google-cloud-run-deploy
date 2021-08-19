@@ -11,13 +11,15 @@ def describe_cloud_run(deployment_name,  cloud_run_config, return_json=False):
     if not return_json:
         stdout, stderr = run_shell_command(
             ["gcloud", "run", "services", "describe", service_name,
-            "--platform", str(cloud_run_config["platform"])]
+            "--platform", str(cloud_run_config["platform"]),
+            "--region", str(cloud_run_config["region"])]
         )
         print(stdout)
     else:
         stdout, stderr = run_shell_command(
             ["gcloud", "run", "services", "describe", service_name, 
              "--platform", str(cloud_run_config["platform"]),
+             "--region", str(cloud_run_config["region"]),
              "--format=export"]
         )
         yaml = YAML()
