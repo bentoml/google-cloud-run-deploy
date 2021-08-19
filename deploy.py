@@ -53,7 +53,7 @@ def deploy_gcloud_run(bento_bundle_path, deployment_name, config_json):
     )
 
     print("Deployment Successful!")
-    describe_cloud_run(deployment_name)
+    describe_cloud_run(deployment_name, cloud_run_config)
 
 
 if __name__ == "__main__":
