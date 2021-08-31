@@ -42,6 +42,10 @@ def deploy_gcloud_run(bento_bundle_path, deployment_name, config_json):
             str(cloud_run_config["min_instances"]),
             "--max-instances",
             str(cloud_run_config["max_instances"]),
+            "--platform",
+            str(cloud_run_config["platform"]),
+            "--region",
+            str(cloud_run_config["region"]),
             "--allow-unauthenticated"
             if cloud_run_config["allow_unauthenticated"]
             else "--no-allow-unauthenticated",
@@ -49,7 +53,7 @@ def deploy_gcloud_run(bento_bundle_path, deployment_name, config_json):
     )
 
     print("Deployment Successful!")
-    describe_cloud_run(deployment_name)
+    describe_cloud_run(deployment_name, cloud_run_config)
 
 
 if __name__ == "__main__":

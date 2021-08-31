@@ -5,5 +5,7 @@
   "max_instances": 1,
   "memory": "512Mi",
   "cpu": 1,
-  "allow_unauthenticated": true
+  "allow_unauthenticated": true,
+  "platform": "managed",
+  "region": "us-central1"
 }
