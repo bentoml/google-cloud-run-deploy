@@ -88,12 +88,19 @@ deploy_gcloud_run(BENTO_BUNDLE_PATH, DEPLOYMENT_NAME, CONFIG_JSON)
 There is an optional config file available that you can use to specifiy the configs for you deployment. These are configurations for the Google Cloud Run so do refer the docs attached for more info about the options. The available options are. 
 
 - `project_id` (required): You project id. This will be a unique id for each of your project and all your resources for that project will come under this. If you haven't created a project, head over to the console and create it. If you have one run `gcloud config get-value project` to get the value
+- `region`: The region to which you want to deploy your cloud run service. Check
+  the [official list](https://cloud.google.com/about/locations) to know more
+  about all the regions available.
 - `port`: The port that Cloud Run container should listen to. Note this should be the same as the port that the bento service is listening too (by default 5000).
 - `min-instances`: The number of minimum instances that Cloud Run should keep active. Check the [docs](https://cloud.google.com/run/docs/configuring/min-instances)for more info.
 - `max_instances`: The maximum number of instances Cloud Run should scale upto under load. Check the [dcos](https://cloud.google.com/run/docs/configuring/max-instances) on how to configure it.
 - `memory`: The RAM that should be available for each instance. If you model uses more that the specified RAM it will be terminated. More info, [docs](https://cloud.google.com/run/docs/configuring/memory-limits)
 - `cpu`: The number of CPU spec needed for each instance. Check [docs](https://cloud.google.com/run/docs/configuring/cpu) for more info.
 - `allow_unauthenticated` - you can specify if the endpoint should receive request from the public.
+- `platform`: The target platform for running the commands. Currently only
+  `managed` is supported. Check out the [official
+  docs](https://cloud.google.com/sdk/gcloud/reference/run/deploy#--platform) to
+  know more
 
 ## Update existing Deployment - `update.py`
 Use Command Line
