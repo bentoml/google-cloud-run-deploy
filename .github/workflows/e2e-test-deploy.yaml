@@ -25,13 +25,16 @@ jobs:
 
     # <insert integration tests needing secrets>
 
-    - run: aws --version
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
       with:
-        aws-access-key-id: ${{ secrets.AWS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SEC }}
-        aws-region: 'us-west-1'
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
     - name: Setup python 3.8
       uses: actions/setup-python@v2
       with:
