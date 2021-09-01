@@ -25,7 +25,16 @@ def deploy(bento_bundle_path, deployment_name, config_json):
 
     with console.status("Building and Pushing image"):
         run_shell_command(
-            ["gcloud", "builds", "submit", bento_bundle_path, "--tag", gcr_tag]
+            [
+                "gcloud",
+                "builds",
+                "submit",
+                bento_bundle_path,
+                "--tag",
+                gcr_tag,
+                "--project",
+                cloud_run_config["project_id"],
+            ]
         )
 
     with console.status("Deploying to Cloud Run"):
@@ -51,6 +60,8 @@ def deploy(bento_bundle_path, deployment_name, config_json):
                 str(cloud_run_config["platform"]),
                 "--region",
                 str(cloud_run_config["region"]),
+                "--project",
+                str(cloud_run_config["project_id"]),
                 "--allow-unauthenticated"
                 if cloud_run_config["allow_unauthenticated"]
                 else "--no-allow-unauthenticated",

@@ -18,6 +18,8 @@ def describe(deployment_name, config_json, return_json=False):
         str(cloud_run_config["platform"]),
         "--region",
         str(cloud_run_config["region"]),
+        "--project",
+        str(cloud_run_config["project_id"]),
     ]
 
     if return_json:

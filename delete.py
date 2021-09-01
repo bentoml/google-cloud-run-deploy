@@ -28,6 +28,8 @@ def delete(deployment_name, config_json):
                 service_name,
                 "--region",
                 cloud_run_config["region"],
+                "--project",
+                str(cloud_run_config["project_id"]),
                 "--quiet",
             ]
         )
