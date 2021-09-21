@@ -20,7 +20,7 @@ Cloud Run is GCP's serverless solution for containers. With Cloud Run you can de
 2. Deploy Iris Classifier into Cloud Run. You can use the `deploy.py` script.
   ```
   $ BENTO_BUNDLE_PATH=$(bentoml get IrisClassifier:latest --print-location -q)
-  $ python deploy $BENTO_BUNDLE_PATH iris-deployment cloud_run_config.json
+  $ python deploy.py $BENTO_BUNDLE_PATH iris-deployment cloud_run_config.json
   
   # Sample output
   Building and Pushing irisclassifier:20210720202108_e3fd4b
