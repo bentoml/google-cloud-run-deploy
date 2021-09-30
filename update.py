@@ -1,9 +1,12 @@
-import sys
+import os
+
+import argparse
 
 from bentoml.saved_bundle import load_bento_service_metadata
 
 from describe import describe_cloud_run
-from utils import run_shell_command, get_configuration_value, generate_cloud_run_names
+from utils import run_shell_command, get_configuration_value, generate_cloud_run_names,console
+
 
 
 def update_gcloud_run(bento_bundle_path, deployment_name, config_json):
@@ -18,12 +21,12 @@ def update_gcloud_run(bento_bundle_path, deployment_name, config_json):
     )
 
     img_name = gcr_tag.split("/")[-1]
-    print(f"Building and Pushing {img_name}")
+    console.print(f"Building and Pushing {img_name}")
     run_shell_command(
         ["gcloud", "builds", "submit", bento_bundle_path, "--tag", gcr_tag]
     )
 
-    print(f"Updating [{img_name}] to Cloud Run Service [{service_name}]")
+    console.print(f"Updating [{img_name}] to Cloud Run Service [{service_name}]")
     run_shell_command(
         [
             "gcloud",
@@ -49,18 +52,27 @@ def update_gcloud_run(bento_bundle_path, deployment_name, config_json):
     )
 
     # show endpoint URL and other info
-    print("Updation Successful!")
+    console.print("Updation Successful!")
     describe_cloud_run(deployment_name)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        raise Exception(
-            "Please provide bundle path, deployment name and path to Cloud Run "
-            "config file (optional)"
-        )
-    bento_bundle_path = sys.argv[1]
-    deployment_name = sys.argv[2]
-    config_json = sys.argv[3] if len(sys.argv) == 4 else "cloud_run_config.json"
+    parser=argparse.ArgumentParser(
+        description="Update bentoml bundle on Azure Functions",
+        epilog="Check out https://github.com/bentoml/google-cloud-run-deploy#readme to know more"
+    )
+    parser.add_argument("bento_bundle_path",help="Path to bentoml bundle.")
+    parser.add_argument(
+        "deployment_name", help="The name you want to use for your deployment"
+    )
+    parser.add_argument(
+        "config_json",
+        help="(optional) The config file for your deployment",
+        default=os.path.join(os.getcwd(), "cloud_run_config.json"),
+        nargs="?",
+    )
+    args = parser.parse_args()
+    
 
-    update_gcloud_run(bento_bundle_path, deployment_name, config_json)
+    update_gcloud_run(args.bento_bundle_path, args.deployment_name, args.config_json)
+    console.print("[bold green]Update Complete!")
