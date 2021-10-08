@@ -1,6 +1,11 @@
 import re
 import json
 import subprocess
+from rich.console import Console
+
+
+# initialize the rich console for the project
+console = Console(highlight=False)
 
 
 def run_shell_command(command, cwd=None, env=None, shell_mode=False):

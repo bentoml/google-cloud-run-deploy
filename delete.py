@@ -1,19 +1,39 @@
-import sys
+import os
+import argparse
 
-from describe import describe_cloud_run
-from utils import run_shell_command, generate_cloud_run_names
+from describe import describe
+from utils import (
+    run_shell_command,
+    generate_cloud_run_names,
+    get_configuration_value,
+    console,
+)
 
 
-def delete_cloud_run(deployment_name):
+def delete(deployment_name, config_json):
     service_name, _ = generate_cloud_run_names(deployment_name)
+    cloud_run_config = get_configuration_value(config_json)
 
-    service_data = describe_cloud_run(service_name, return_json=True)
+    service_data = describe(service_name, config_json, return_json=True)
     img = service_data["spec"]["template"]["spec"]["containers"][0]["image"]
     repo_name = img.split(":")[0]
-    print(repo_name, deployment_name)
 
-    print(f"Deleting Cloud Run service [{service_name}]")
-    run_shell_command(["gcloud", "run", "services", "delete", service_name, "--quiet"])
+    with console.status(f"Deleting [[b]{service_name}[/b]]"):
+        run_shell_command(
+            [
+                "gcloud",
+                "run",
+                "services",
+                "delete",
+                service_name,
+                "--region",
+                cloud_run_config["region"],
+                "--project",
+                str(cloud_run_config["project_id"]),
+                "--quiet",
+            ]
+        )
+    console.print(f"Deleted Cloud Run service [[b]{service_name}[/b]]")
 
     # get all images in container registry
     images, _ = run_shell_command(
@@ -22,23 +42,36 @@ def delete_cloud_run(deployment_name):
 
     # loop through all the images in the container registry and delete them.
     for i, img in enumerate(images):
-        print(f"\rDeleting image {i+1}/{len(images)}", end="")
-        run_shell_command(
-            [
-                "gcloud",
-                "container",
-                "images",
-                "delete",
-                f"{repo_name}@{img['digest']}",
-                "--force-delete-tags",
-                "--quiet",
-            ]
-        )
+        with console.status(f"Deleting image {i+1}/{len(images)}"):
+            run_shell_command(
+                [
+                    "gcloud",
+                    "container",
+                    "images",
+                    "delete",
+                    f"{repo_name}@{img['digest']}",
+                    "--force-delete-tags",
+                    "--quiet",
+                ]
+            )
+    console.print("Deleted images")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        raise Exception("Please provide deployment_name")
-    deployment_name = sys.argv[1]
+    parser = argparse.ArgumentParser(
+        description="Delete Google Cloud Run deployment",
+        epilog="Check out https://github.com/bentoml/google-cloud-run-deploy#readme to know more",
+    )
+    parser.add_argument(
+        "deployment_name", help="The name you want to use for your deployment"
+    )
+    parser.add_argument(
+        "config_json",
+        help="(optional) The config file for your deployment",
+        default=os.path.join(os.getcwd(), "cloud_run_config.json"),
+        nargs="?",
+    )
+    args = parser.parse_args()
 
-    delete_cloud_run(deployment_name)
+    delete(args.deployment_name, args.config_json)
+    console.print('[bold green]Deletion complete!')
