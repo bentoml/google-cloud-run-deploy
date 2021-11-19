@@ -8,6 +8,9 @@ Cloud Run is GCP's serverless solution for containers. With Cloud Run you can de
 
   Install instruction: https://cloud.google.com/sdk/docs/install and make sure all your `gcloud` components are upto data. Run `gcloud components update` to update.
 
+  * Create a project and update `cloud_run_config.json` with your `project_id`
+  * Make sure the neccassy Google APIs are enabled
+
 - Docker is installed and running on the machine. Install instruction: https://docs.docker.com/install
 - Installed the required python packages. 
   ```bash
