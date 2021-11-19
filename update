@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+
+import os
+import argparse
+
+import google_cloud_run_deploy
+
+parser = argparse.ArgumentParser(
+    description="Update the bentoml bundle on Google Cloud Run",
+    epilog="Check out https://github.com/bentoml/google-cloud-run-deploy#readme to know more",
+)
+parser.add_argument("bento_bundle_path", help="Path to bentoml bundle")
+parser.add_argument(
+    "deployment_name", help="The name you want to use for your deployment"
+)
+parser.add_argument(
+    "config_json",
+    help="(optional) The config file for your deployment",
+    default=os.path.join(os.getcwd(), "cloud_run_config.json"),
+    nargs="?",
+)
+args = parser.parse_args()
+
+google_cloud_run_deploy.update(args.bento_bundle_path, args.deployment_name, args.config_json)
+# show endpoint URL and other info
+google_cloud_run_deploy.utils.console.print("[bold green]Updation Successful!")
+google_cloud_run_deploy.describe(args.deployment_name, args.config_json)
