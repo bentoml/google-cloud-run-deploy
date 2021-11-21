@@ -1,9 +1,8 @@
-from .utils import generate_cloud_run_names, run_shell_command, get_configuration_value
+from .utils import generate_cloud_run_names, run_shell_command
 
 
-def describe(deployment_name, config_json, return_json=False):
+def describe(deployment_name, cloud_run_config, return_json=False):
     service_name, _ = generate_cloud_run_names(deployment_name)
-    cloud_run_config = get_configuration_value(config_json)
 
     describe_command = [
         "gcloud",

@@ -21,4 +21,5 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-google_cloud_run_deploy.describe(args.deployment_name, args.config_json)
+deployment_spec = google_cloud_run_deploy.get_configuration_value(args.config_json)
+google_cloud_run_deploy.describe(args.deployment_name, deployment_spec)

@@ -4,7 +4,6 @@ from .describe import describe
 
 from .utils import (
     run_shell_command,
-    get_configuration_value,
     generate_cloud_run_names,
     console,
 )
