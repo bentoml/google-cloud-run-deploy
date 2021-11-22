@@ -2,8 +2,8 @@
 
 import argparse
 import os
-import google_cloud_run_deploy
 
+import google_cloud_run_deploy
 
 parser = argparse.ArgumentParser(
     description="Deploy the bentoml bundle on Google Cloud Run",

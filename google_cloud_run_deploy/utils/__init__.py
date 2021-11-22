@@ -1,8 +1,8 @@
-import re
 import json
+import re
 import subprocess
-from rich.console import Console
 
+from rich.console import Console
 
 # initialize the rich console for the project
 console = Console(highlight=False)

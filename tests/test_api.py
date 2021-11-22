@@ -1,18 +1,17 @@
 import os
-import sys
 import shutil
+import sys
 import tempfile
 import time
 
 import requests
+from classifier import TestService
 from pandas import DataFrame
 
-from classifier import TestService
-
 sys.path.append("./")
+from delete import delete
 from deploy import deploy
 from describe import describe
-from delete import delete
 
 
 class Setup:

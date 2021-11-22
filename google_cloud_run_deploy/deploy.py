@@ -1,12 +1,7 @@
 from bentoml.saved_bundle import load_bento_service_metadata
 
 from .describe import describe
-
-from .utils import (
-    run_shell_command,
-    generate_cloud_run_names,
-    console,
-)
+from .utils import console, generate_cloud_run_names, run_shell_command
 
 
 def deploy(bento_bundle_path, deployment_name, cloud_run_config):
