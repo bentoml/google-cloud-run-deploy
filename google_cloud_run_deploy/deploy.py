@@ -8,6 +8,7 @@ from .utils import (
     console,
 )
 
+
 def deploy(bento_bundle_path, deployment_name, cloud_run_config):
     bundle_metadata = load_bento_service_metadata(bento_bundle_path)
 
@@ -62,4 +63,3 @@ def deploy(bento_bundle_path, deployment_name, cloud_run_config):
                 else "--no-allow-unauthenticated",
             ]
         )
-    

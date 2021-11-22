@@ -5,6 +5,7 @@ from .utils import (
     console,
 )
 
+
 def delete(deployment_name, cloud_run_config):
     service_name, _ = generate_cloud_run_names(deployment_name)
 

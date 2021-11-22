@@ -49,6 +49,5 @@ OPERATOR_SCHEMA = {
     "platform": {
         "required": True,
         "default": "managed",
-    }
-
+    },
 }
