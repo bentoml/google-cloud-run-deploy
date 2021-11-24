@@ -1,17 +1,15 @@
-from bentoml.saved_bundle import load_bento_service_metadata
-
 from .describe import describe
-from .utils import console, generate_cloud_run_names, run_shell_command
+from .utils import console, generate_cloud_run_names, run_shell_command, get_metadata
 
 
 def deploy(bento_bundle_path, deployment_name, cloud_run_config):
-    bundle_metadata = load_bento_service_metadata(bento_bundle_path)
+    bundle_metadata = get_metadata(bento_bundle_path)
 
     service_name, gcr_tag = generate_cloud_run_names(
         deployment_name,
         cloud_run_config["project_id"],
-        bundle_metadata.name,
-        bundle_metadata.version,
+        bundle_metadata.get("name"),
+        bundle_metadata.get("version"),
     )
 
     with console.status("Building and Pushing image"):
