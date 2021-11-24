@@ -9,9 +9,9 @@ from classifier import TestService
 from pandas import DataFrame
 
 sys.path.append("./")
-from delete import delete
-from deploy import deploy
-from describe import describe
+from .delete import delete
+from .deploy import deploy
+from .describe import describe
 
 
 class Setup:
