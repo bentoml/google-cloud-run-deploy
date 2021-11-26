@@ -1,8 +1,6 @@
 import json
 import re
 import subprocess
-import yaml
-import os.path
 
 from rich.console import Console
 
@@ -50,13 +48,3 @@ def generate_cloud_run_names(
     )
 
     return service_name, gcr_tag
-
-
-def get_metadata(bento_bundle_path):
-    "Read `bento.yaml` and return name and version for `generate_cloud_run_names()`"
-    with open(os.path.join(bento_bundle_path, "bento.yaml"), "r") as bento_yaml:
-        try:
-            metadata = yaml.safe_load(bento_yaml)
-        except yaml.YAMLError as exc:
-            print(exc)
-    return metadata
