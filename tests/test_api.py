@@ -3,15 +3,14 @@ import shutil
 import sys
 import tempfile
 import time
+import json
 
 import requests
 from classifier import TestService
 from pandas import DataFrame
 
 sys.path.append("./")
-from .delete import delete
-from .deploy import deploy
-from .describe import describe
+import google_cloud_run_deploy
 
 
 class Setup:
@@ -25,8 +24,7 @@ class Setup:
         self.saved_dir = os.path.join(self.dirpath, "saved_dir")
 
         # make config file
-        config = """
-        {
+        config = {
           "project_id": "bentoml-316710",
           "region": "us-central1",
           "port": 5001,
@@ -34,13 +32,11 @@ class Setup:
           "max_instances": 1,
           "memory": "512Mi",
           "cpu": 1,
-          "allow_unauthenticated": true,
+          "allow_unauthenticated": True,
           "platform": "managed"
         }
-        """
-        self.config_file = os.path.join(self.dirpath, "config.json")
-        with open(self.config_file, "w") as f:
-            f.write(config)
+        
+        self.config = config
 
         # make bento service
         os.mkdir(self.saved_dir)
@@ -67,10 +63,12 @@ class Setup:
         return False
 
     def make_deployment(self):
-        deploy(self.saved_dir, self.deployment_name, self.config_file)
-        info_json = describe(
+        google_cloud_run_deploy.deploy(
+            self.saved_dir, self.deployment_name, self.config
+        )
+        info_json = google_cloud_run_deploy.describe(
             deployment_name=self.deployment_name,
-            config_json=self.config_file,
+            cloud_run_config=self.config,
             return_json=True,
         )
         url = info_json["status"]["url"] + "/{}"
@@ -83,7 +81,7 @@ class Setup:
         return url
 
     def teardown(self):
-        delete(self.deployment_name, self.config_file)
+        google_cloud_run_deploy.delete(self.deployment_name, self.config)
         shutil.rmtree(self.dirpath)
         print("Removed {}!".format(self.dirpath))
 
