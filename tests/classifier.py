@@ -1,12 +1,11 @@
 # iris_classifier.py
-from bentoml import env, api, BentoService
-from bentoml.adapters import DataframeInput, JsonInput, FileInput
-from bentoml.types import JsonSerializable, FileLike
+from bentoml import BentoService, api, env
+from bentoml.adapters import DataframeInput, FileInput, JsonInput
+from bentoml.types import FileLike, JsonSerializable
 
 
 @env(infer_pip_packages=True)
 class TestService(BentoService):
-
     @api(input=DataframeInput(), batch=True)
     def dfapi(self, df):
         print(df)

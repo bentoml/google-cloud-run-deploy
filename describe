@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+
+import google_cloud_run_deploy
+
+parser = argparse.ArgumentParser(
+    description="Describe the Google Cloud Run deployment.",
+    epilog="Check out https://github.com/bentoml/google-cloud-run-deploy#readme to know more",
+)
+parser.add_argument(
+    "deployment_name", help="The name you want to use for your deployment"
+)
+parser.add_argument(
+    "config_json",
+    help="(optional) The config file for your deployment",
+    default=os.path.join(os.getcwd(), "cloud_run_config.json"),
+    nargs="?",
+)
+args = parser.parse_args()
+
+deployment_spec = google_cloud_run_deploy.get_configuration_value(args.config_json)
+google_cloud_run_deploy.describe(args.deployment_name, deployment_spec)
