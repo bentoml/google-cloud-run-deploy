@@ -35,7 +35,7 @@ class Setup:
           "allow_unauthenticated": True,
           "platform": "managed"
         }
-        
+
         self.config = config
 
         # make bento service
@@ -68,7 +68,7 @@ class Setup:
         )
         info_json = google_cloud_run_deploy.describe(
             deployment_name=self.deployment_name,
-            cloud_run_config=self.config,
+            deployment_spec=self.config,
             return_json=True,
         )
         url = info_json["status"]["url"] + "/{}"
