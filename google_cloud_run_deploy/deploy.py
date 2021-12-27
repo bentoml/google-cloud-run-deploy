@@ -1,6 +1,5 @@
 from bentoml.bentos import containerize
 
-from .describe import describe
 from .utils import (
     console,
     generate_cloud_run_names,
@@ -20,15 +19,13 @@ def deploy(bento_path, deployment_name, deployment_spec):
         bento_tag.version,
     )
 
-    with console.status("Containerizing bento"):
-        containerize(bento_tag.name, docker_image_tag=gcr_tag)
-
-    with console.status('Pushing bento to gcr'):
+    containerize(bento_tag.name, docker_image_tag=gcr_tag)
+    with console.status("Pushing to gcr") as status:
         # docker login to gcr.io
         run_shell_command(["gcloud", "auth", "configure-docker", "gcr.io", "--quiet"])
         push_image(gcr_tag)
 
-    with console.status("Deploying to Cloud Run"):
+        status.update("Deploying to Cloud Run")
         run_shell_command(
             [
                 "gcloud",
