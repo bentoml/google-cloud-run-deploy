@@ -2,6 +2,9 @@ import json
 import re
 import subprocess
 
+import docker
+import fs
+from bentoml.bentos import Bento
 from rich.console import Console
 
 # initialize the rich console for the project
@@ -48,3 +51,19 @@ def generate_cloud_run_names(
     )
 
     return service_name, gcr_tag
+
+
+def get_tag_from_path(path: str):
+    bento = Bento.from_fs(fs.open_fs(path))
+    return bento.tag
+
+
+def push_image(repository, image_tag=None, username=None, password=None):
+    docker_client = docker.from_env()
+    docker_push_kwags = {"repository": repository, "tag": image_tag}
+    if username is not None and password is not None:
+        docker_push_kwags["auth_config"] = {"username": username, "password": password}
+    try:
+        docker_client.images.push(**docker_push_kwags)
+    except docker.errors.APIError as error:
+        raise Exception(f"Failed to push docker image: {error}")

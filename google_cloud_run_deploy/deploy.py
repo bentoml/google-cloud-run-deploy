@@ -1,34 +1,31 @@
-from bentoml.saved_bundle import load_bento_service_metadata
+from bentoml.bentos import containerize
 
-from .describe import describe
-from .utils import console, generate_cloud_run_names, run_shell_command
+from .utils import (
+    console,
+    generate_cloud_run_names,
+    run_shell_command,
+    get_tag_from_path,
+    push_image
+)
 
 
-def deploy(bento_bundle_path, deployment_name, cloud_run_config):
-    bundle_metadata = load_bento_service_metadata(bento_bundle_path)
+def deploy(bento_path, deployment_name, deployment_spec):
+    bento_tag = get_tag_from_path(bento_path)
 
     service_name, gcr_tag = generate_cloud_run_names(
         deployment_name,
-        cloud_run_config["project_id"],
-        bundle_metadata.name,
-        bundle_metadata.version,
+        deployment_spec["project_id"],
+        bento_tag.name,
+        bento_tag.version,
     )
 
-    with console.status("Building and Pushing image"):
-        run_shell_command(
-            [
-                "gcloud",
-                "builds",
-                "submit",
-                bento_bundle_path,
-                "--tag",
-                gcr_tag,
-                "--project",
-                cloud_run_config["project_id"],
-            ]
-        )
+    containerize(bento_tag.name, docker_image_tag=gcr_tag)
+    with console.status("Pushing to gcr") as status:
+        # docker login to gcr.io
+        run_shell_command(["gcloud", "auth", "configure-docker", "gcr.io", "--quiet"])
+        push_image(gcr_tag)
 
-    with console.status("Deploying to Cloud Run"):
+        status.update("Deploying to Cloud Run")
         run_shell_command(
             [
                 "gcloud",
@@ -38,23 +35,23 @@ def deploy(bento_bundle_path, deployment_name, cloud_run_config):
                 "--image",
                 gcr_tag,
                 "--port",
-                str(cloud_run_config.get("port")),
+                str(deployment_spec.get("port")),
                 "--memory",
-                cloud_run_config["memory"],
+                deployment_spec["memory"],
                 "--cpu",
-                str(cloud_run_config["cpu"]),
+                str(deployment_spec["cpu"]),
                 "--min-instances",
-                str(cloud_run_config["min_instances"]),
+                str(deployment_spec["min_instances"]),
                 "--max-instances",
-                str(cloud_run_config["max_instances"]),
+                str(deployment_spec["max_instances"]),
                 "--platform",
-                str(cloud_run_config["platform"]),
+                str(deployment_spec["platform"]),
                 "--region",
-                str(cloud_run_config["region"]),
+                str(deployment_spec["region"]),
                 "--project",
-                str(cloud_run_config["project_id"]),
+                str(deployment_spec["project_id"]),
                 "--allow-unauthenticated"
-                if cloud_run_config["allow_unauthenticated"]
+                if deployment_spec["allow_unauthenticated"]
                 else "--no-allow-unauthenticated",
             ]
         )

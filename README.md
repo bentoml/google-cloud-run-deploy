@@ -1,50 +1,61 @@
-# BentoML Cloud Run Deployment Tool
+<div align="center">
+    <h1>Google Cloud Run Operator</h1>
+    <p>
+        <img src="https://user-images.githubusercontent.com/5261489/147468164-c542e1a5-7fc0-4ec2-9000-d9dc446d4fe7.png" width=20%/>
+    <p>
+</div>
 
 Cloud Run is Google Cloud's serverless solution for containers. With Cloud Run you can develop and deploy highly scalable containerized applications on a fully managed serverless platform. Cloud Run is great for running small to medium models since you only pay for the compute you use and it is super scalable.
 
-This tool can be used as an Operator for [BentoCTL](https://github.com/bentoml/bentoctl). See steps on how to add Cloud Run Deployment Tool as an operator [here](#deploy-to-cloud-run-with-bentoctl).
+This tool can be used as an Operator for [bentoctl](https://github.com/bentoml/bentoctl). See steps on how to add Cloud Run Deployment Tool as an operator [here](#deploy-to-cloud-run-with-bentoctl).
 
-With the combination of [BentoML](https://github.com/bentoml/BentoML) and [BentoCTL](https://github.com/bentoml/bentoctl), you can enjoy the flexibility of Cloud Run with any of the popular frameworks.
+With the combination of [BentoML](https://github.com/bentoml/BentoML) and [bentoctl](https://github.com/bentoml/bentoctl), you can enjoy the flexibility of Cloud Run with any of the popular frameworks.
 
-## Prerequisits
+<!--ts-->
+
+## Table of Contents
+
+   * [Prerequisites](#prerequisites)
+   * [Deploy to Cloud Run with bentoctl](#deploy-to-cloud-run-with-bentoctl)
+   * [Configuring the Deployment](#configuring-the-deployment)
+   * [Deployment Command Reference](#deployment-command-reference)
+      * [Create a Deployment](#create-a-deployment)
+      * [Update a Deployment](#update-a-deployment)
+      * [Get a Deployment’s Status and Information](#get-a-deployments-status-and-information)
+      * [Delete a Deployment](#delete-a-deployment)
+
+<!-- Added by: jjmachan, at: Monday 27 December 2021 05:14:39 PM IST -->
+
+<!--te-->
+
+## Prerequisites
 
 - Google cloud CLI tool
   - Install instruction: https://cloud.google.com/sdk/docs/install and make sure all your `gcloud` components are up to date. Run `gcloud components update` to update
-  - Create a project and update `cloud_run_config.json` with your `project_id`
 - Docker is installed and running on the machine
   - Install instruction: https://docs.docker.com/install
 - Installed the required python packages
   ```bash
   $ pip install -r requirements.txt
   ```
-- Build bento
-  - Checkout [BentoML quickstart guide](https://github.com/bentoml/BentoML/blob/master/guides/quick-start/bentoml-quick-start-guide.ipynb) for how to get it started
 
 
-## Deploy to Cloud Run with BentoCTL
+## Deploy to Cloud Run with bentoctl
 
-1. Install BentoCTL
+To run this quickstart, you will need to have a working bento. You can checkout [BentoML quickstart guide](https://github.com/bentoml/gallery/tree/main) for how to get it started. After you have a bento working locally, you can now deploy it to Cloud Run with bentoctl.
+
+1. Install bentoctl
     ```bash
     $ pip install bentoctl
     ```
 
 2. Add Google Cloud Run operator
     ```bash
-    $ bentoctl operator add 
-    Choose of the Official Operators
-    yatai
-    heroku
-    aws-lambda
-    aws-sagemaker
-    asw-ec2
-    azure-functions
-    azure-container-instances
-    google_compute_engine
-    > google-cloud-run      
+    $ bentoctl operator add google-cloud-run      
     Added google-cloud-run!                                              
     ```
 
-3. Deploy to Heroku using BentoCTL deploy command
+3. Deploy to Heroku using bentoctl deploy command
     ```bash
     # Use the interactive mode
     $ bentoctl deploy 
@@ -78,14 +89,8 @@ With the combination of [BentoML](https://github.com/bentoml/BentoML) and [Bento
     ~ Builing and Pushing Image
     ~ Deploying Image
     Successful deployment!
-    
-4. Deploy to Cloud Run using already prepared `deployment_spec.yaml`
-    ```bash
-    # Or provide deployment spec yaml. See bentoctl repo for more detail
-    $ bentoctl deploy --file deployment_spec.yaml
-    ```
 
-5. Get deployment information
+4. Get deployment information
     ```bash
     $ bentoctl describe deployment_spec.yaml
 
@@ -105,11 +110,9 @@ With the combination of [BentoML](https://github.com/bentoml/BentoML) and [Bento
       Concurrency:   80
       Max Instances: 1
       Timeout:       300s
-
-    None
     ```
 
-6. Make sample request
+5. Make sample request
     ```bash
     $ curl -i \
       --header "Content-Type: application/json" \
@@ -135,7 +138,26 @@ With the combination of [BentoML](https://github.com/bentoml/BentoML) and [Bento
     ```bash
     $ bentoctl delete deployment_spec.yaml
     ```
+## Configuring the Deployment
+There is an optional config file available that you can use to specifiy the configs for you deployment, [cloud_run_config.json](cloud_run_config.json). 
 
+This is the list of configurations you can use to deploy your bento to Google Cloud Run. Please refer to the documentation attached to each point for more information about the options.
+
+The required configuration is: 
+- `project_id`: You project id. This will be a unique id for each of your projects, specifying unique resources available to each project. If you haven't created a project, head over to the console and create it
+  - check projects you already have by running `gcloud config get-value project`
+- `region`: The region to which you want to deploy your Cloud Run service. Check
+  the [official list](https://cloud.google.com/run/docs/locations) to know more
+  about all the regions available
+- `port`: The port that Cloud Run container should listen to. Note: this should be the same as the port that the bento service is listening to (by default 5000)
+- `min-instances`: The number of minimum instances that Cloud Run should keep active. Check the [docs](https://cloud.google.com/run/docs/configuring/min-instances)for more info
+- `max_instances`: The maximum number of instances Cloud Run should scale upto under load. Check the [dcos](https://cloud.google.com/run/docs/configuring/max-instances) on how to configure it
+- `memory`: The RAM that should be available for each instance. If your model uses more than the specified RAM, it will be terminated. Check the [docs](https://cloud.google.com/run/docs/configuring/memory-limits)
+- `cpu`: The number of CPUs needed for each instance. Check the [docs](https://cloud.google.com/run/docs/configuring/cpu) for more info
+- `allow_unauthenticated`: Specify if the endpoint should receive request from the public. Check the [docs](https://cloud.google.com/run/docs/authenticating/public?hl=en)
+- `platform`: The target platform for running the commands. Currently only
+  `managed` is supported. Check out the [docs](https://cloud.google.com/sdk/gcloud/reference/run/deploy#--platform) to know more
+  
 ## Deployment Command Reference
 
 ### Create a Deployment
@@ -202,23 +224,3 @@ from google_cloud_run_deploy import delete
 delete(DEPLOYMENT_NAME, CLOUD_RUN_CONFIG)
 ```
 * where `CLOUD_RUN_CONFIG` is a dictionary with keys for `"region"` and `"project_id"`
-
-## Configuring the Deployment
-There is an optional config file available that you can use to specifiy the configs for you deployment, [cloud_run_config.json](cloud_run_config.json). 
-
-This is the list of configurations you can use to deploy your bento to Google Cloud Run. Please refer to the documentation attached to each point for more information about the options.
-
-The required configuration is: 
-- `project_id`: You project id. This will be a unique id for each of your projects, specifying unique resources available to each project. If you haven't created a project, head over to the console and create it
-  - check projects you already have by running `gcloud config get-value project`
-- `region`: The region to which you want to deploy your Cloud Run service. Check
-  the [official list](https://cloud.google.com/run/docs/locations) to know more
-  about all the regions available
-- `port`: The port that Cloud Run container should listen to. Note: this should be the same as the port that the bento service is listening to (by default 5000)
-- `min-instances`: The number of minimum instances that Cloud Run should keep active. Check the [docs](https://cloud.google.com/run/docs/configuring/min-instances)for more info
-- `max_instances`: The maximum number of instances Cloud Run should scale upto under load. Check the [dcos](https://cloud.google.com/run/docs/configuring/max-instances) on how to configure it
-- `memory`: The RAM that should be available for each instance. If your model uses more than the specified RAM, it will be terminated. Check the [docs](https://cloud.google.com/run/docs/configuring/memory-limits)
-- `cpu`: The number of CPUs needed for each instance. Check the [docs](https://cloud.google.com/run/docs/configuring/cpu) for more info
-- `allow_unauthenticated`: Specify if the endpoint should receive request from the public. Check the [docs](https://cloud.google.com/run/docs/authenticating/public?hl=en)
-- `platform`: The target platform for running the commands. Currently only
-  `managed` is supported. Check out the [docs](https://cloud.google.com/sdk/gcloud/reference/run/deploy#--platform) to know more

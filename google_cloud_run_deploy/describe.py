@@ -1,7 +1,7 @@
 from .utils import generate_cloud_run_names, run_shell_command
 
 
-def describe(deployment_name, cloud_run_config, return_json=False):
+def describe(deployment_name, deployment_spec, return_json=False):
     service_name, _ = generate_cloud_run_names(deployment_name)
 
     describe_command = [
@@ -11,11 +11,11 @@ def describe(deployment_name, cloud_run_config, return_json=False):
         "describe",
         service_name,
         "--platform",
-        str(cloud_run_config["platform"]),
+        str(deployment_spec["platform"]),
         "--region",
-        str(cloud_run_config["region"]),
+        str(deployment_spec["region"]),
         "--project",
-        str(cloud_run_config["project_id"]),
+        str(deployment_spec["project_id"]),
     ]
 
     if return_json:

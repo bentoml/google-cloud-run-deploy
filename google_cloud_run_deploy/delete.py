@@ -2,10 +2,10 @@ from .describe import describe
 from .utils import console, generate_cloud_run_names, run_shell_command
 
 
-def delete(deployment_name, cloud_run_config):
+def delete(deployment_name, deployment_spec):
     service_name, _ = generate_cloud_run_names(deployment_name)
 
-    service_data = describe(service_name, cloud_run_config, return_json=True)
+    service_data = describe(service_name, deployment_spec, return_json=True)
     img = service_data["spec"]["template"]["spec"]["containers"][0]["image"]
     repo_name = img.split(":")[0]
 
@@ -18,9 +18,9 @@ def delete(deployment_name, cloud_run_config):
                 "delete",
                 service_name,
                 "--region",
-                cloud_run_config["region"],
+                deployment_spec["region"],
                 "--project",
-                str(cloud_run_config["project_id"]),
+                str(deployment_spec["project_id"]),
                 "--quiet",
             ]
         )

@@ -51,10 +51,12 @@ OPERATOR_SCHEMA = {
     "allow_unauthenticated": {
         "required": True,
         "default": True,
+        "type": "boolean",
         "help_message": "Specifies if the service should receive public API requests. Read more https://cloud.google.com/run/docs/authenticating/public?hl=en",
     },
     "platform": {
         "required": True,
+        "type": "string",
         "default": "managed",
         "help_message": "Target platform for running commands. Note: the opperator only supports `managed`. Read more https://cloud.google.com/sdk/gcloud/reference/run/deploy#--platform",
     },
