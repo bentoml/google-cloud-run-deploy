@@ -11,7 +11,24 @@ This tool can be used as an Operator for [bentoctl](https://github.com/bentoml/b
 
 With the combination of [BentoML](https://github.com/bentoml/BentoML) and [bentoctl](https://github.com/bentoml/bentoctl), you can enjoy the flexibility of Cloud Run with any of the popular frameworks.
 
-## Prerequisits
+<!--ts-->
+
+## Table of Contents
+
+   * [Prerequisites](#prerequisites)
+   * [Deploy to Cloud Run with bentoctl](#deploy-to-cloud-run-with-bentoctl)
+   * [Configuring the Deployment](#configuring-the-deployment)
+   * [Deployment Command Reference](#deployment-command-reference)
+      * [Create a Deployment](#create-a-deployment)
+      * [Update a Deployment](#update-a-deployment)
+      * [Get a Deployment’s Status and Information](#get-a-deployments-status-and-information)
+      * [Delete a Deployment](#delete-a-deployment)
+
+<!-- Added by: jjmachan, at: Monday 27 December 2021 05:14:39 PM IST -->
+
+<!--te-->
+
+## Prerequisites
 
 - Google cloud CLI tool
   - Install instruction: https://cloud.google.com/sdk/docs/install and make sure all your `gcloud` components are up to date. Run `gcloud components update` to update
