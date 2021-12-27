@@ -32,18 +32,17 @@ With the combination of [BentoML](https://github.com/bentoml/BentoML) and [bento
 
 - Google cloud CLI tool
   - Install instruction: https://cloud.google.com/sdk/docs/install and make sure all your `gcloud` components are up to date. Run `gcloud components update` to update
-  - Create a project and update `cloud_run_config.json` with your `project_id`
 - Docker is installed and running on the machine
   - Install instruction: https://docs.docker.com/install
 - Installed the required python packages
   ```bash
   $ pip install -r requirements.txt
   ```
-- Build bento
-  - Checkout [BentoML quickstart guide](https://github.com/bentoml/BentoML/blob/master/guides/quick-start/bentoml-quick-start-guide.ipynb) for how to get it started
 
 
 ## Deploy to Cloud Run with bentoctl
+
+To run this quickstart, you will need to have a working bento. You can checkout [BentoML quickstart guide](https://github.com/bentoml/gallery/tree/main) for how to get it started. After you have a bento working locally, you can now deploy it to Cloud Run with bentoctl.
 
 1. Install bentoctl
     ```bash
