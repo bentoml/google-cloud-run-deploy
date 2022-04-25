@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "google" {
-  project = var.project
+  project = var.project_id
   region  = var.region
 }
 
@@ -24,10 +24,24 @@ variable "deployment_name" {
   default     = "testservice"
 }
 
-variable "project" {
+variable "image_tag" {
+  description = "full image gcr image tag"
+  type        = string
+}
+
+variable "image_repository" {
+  description = "gcr repository name"
+  type        = string
+}
+
+variable "image_version" {
+  description = "gcr image version"
+  type        = string
+}
+
+variable "project_id" {
   description = "GCP project to use for creating deployment."
   type        = string
-  default     = "bentoml-316710"
 }
 
 variable "region" {
@@ -36,6 +50,35 @@ variable "region" {
   default     = "us-central1"
 }
 
+variable "port" {
+  description = "Port which the contiainer exposes"
+  type        = string
+  default     = "3000"
+}
+
+variable "min_instances" {
+  description = "Minimum number of instances."
+  type        = number
+  default     = 0
+}
+
+variable "max_instances" {
+  description = "Maximum number of instances."
+  type        = number
+  default     = 1
+}
+
+variable "memory" {
+  description = "Memory for each instance"
+  type        = string
+  default     = "512M"
+}
+
+variable "cpu" {
+  description = "CPU cores for each instance"
+  type        = number
+  default     = 1
+}
 
 ################################################################################
 # Resource definitions
@@ -44,15 +87,15 @@ variable "region" {
 # Enables the Cloud Run API
 resource "google_project_service" "run_api" {
   service = "run.googleapis.com"
+  project = var.project_id
 
   disable_on_destroy = true
 }
 
-# make sure the container registry apis are also ennabled
 
 # Data source for container registry image
 data "google_container_registry_image" "bento_service" {
-  name = "gcpimg"
+  name = var.image_repository
 }
 
 # Create the Cloud Run service
@@ -61,9 +104,29 @@ resource "google_cloud_run_service" "run_service" {
   location = var.region
 
   template {
+    metadata {
+      annotations = {
+        "autoscaling.knative.dev/minScale" = var.min_instances
+        "autoscaling.knative.dev/maxScale" = var.max_instances
+      }
+    }
+
     spec {
       containers {
-        image = "${data.google_container_registry_image.bento_service.image_url}:v1"
+        image = "${data.google_container_registry_image.bento_service.image_url}:${var.image_version}"
+        env {
+          name  = "BENTOML_PORT"
+          value = var.port
+        }
+        ports {
+          container_port = var.port
+        }
+        resources {
+          limits = {
+            memory = var.memory
+            cpu    = var.cpu
+          }
+        }
       }
     }
   }
@@ -72,6 +135,7 @@ resource "google_cloud_run_service" "run_service" {
     percent         = 100
     latest_revision = true
   }
+
 
   # Waits for the Cloud Run API to be enabled
   depends_on = [google_project_service.run_api]

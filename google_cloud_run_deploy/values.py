@@ -9,22 +9,23 @@ DEPLOYMENT_PARAMS_WARNING = """# This file is maintained automatically by
 """
 
 
-def parse_image_tag(image_tag: str):
-    registry_url, tag = image_tag.split("/")
-    repository, version = tag.split(":")
-
-    return registry_url, repository, version
-
-
 class DeploymentValues(UserDict):
     def __init__(self, name, spec, template_type):
         if "image_tag" in spec:
-            _, image_repository, image_version = parse_image_tag(spec["image_tag"])
+            _, image_repository, image_version = self.parse_image_tag(spec["image_tag"])
             spec["image_repository"] = image_repository
             spec["image_version"] = image_version
 
         super().__init__({"deployment_name": name, **spec})
         self.template_type = template_type
+
+    @staticmethod
+    def parse_image_tag(image_tag: str):
+        breakpoint()
+        registry_url, project_id, tag = image_tag.split("/")
+        repository, version = tag.split(":")
+
+        return registry_url, repository, version
 
     def to_params_file(self, file_path):
         if self.template_type == "terraform":

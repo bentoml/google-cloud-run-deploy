@@ -13,8 +13,8 @@ OPERATOR_SCHEMA = {
         "required": True,
         "type": "integer",
         "coerce": int,
-        "default": 5000,
-        "help_message": "The port to which you will send API requests. Note: the port should be the same that the Bento Service is listening to (default: 5000)",
+        "default": 3000,
+        "help_message": "The port to which you will send API requests. Note: the port should be the same that the Bento Service is listening to (default: 3000)",
     },
     "min_instances": {
         "required": True,
@@ -34,8 +34,8 @@ OPERATOR_SCHEMA = {
         "required": True,
         "type": "string",
         "coerce": str,
-        "default": "512Mi",
-        "help_message": "RAM for each available instance. Note: if your bento exceeds this amount, GCP will terminate the container instance. Read more https://cloud.google.com/run/docs/configuring/memory-limits",
+        "default": "512M",
+        "help_message": "RAM for each available instance. Note: if your bento exceeds this amount, GCP will terminate the container instance. Read more https://cloud.google.com/run/docs/configuring/memory-limits [Memory Suffixes: T, G, M, k]",
     },
     "cpu": {
         "required": True,
@@ -43,17 +43,5 @@ OPERATOR_SCHEMA = {
         "coerce": int,
         "default": 1,
         "help_message": "CPU cores for each available instance. Note: container instances only get CPU during request processing and startup. Read more https://cloud.google.com/run/docs/configuring/cpu-allocation",
-    },
-    "allow_unauthenticated": {
-        "required": True,
-        "default": True,
-        "type": "boolean",
-        "help_message": "Specifies if the service should receive public API requests. Read more https://cloud.google.com/run/docs/authenticating/public?hl=en",
-    },
-    "platform": {
-        "required": True,
-        "type": "string",
-        "default": "managed",
-        "help_message": "Target platform for running commands. Note: the opperator only supports `managed`. Read more https://cloud.google.com/sdk/gcloud/reference/run/deploy#--platform",
     },
 }
