@@ -1,14 +1,10 @@
-from .delete import delete
-from .deploy import deploy
-from .describe import describe
-from .update import update
-from .utils import console, get_configuration_value
+from .create_deployable import create_deployable
+from .generate import generate
+from .registry_utils import create_repository, delete_repository
 
 __all__ = [
-    "deploy",
-    "update",
-    "describe",
-    "delete",
-    "console",
-    "get_configuration_value",
+    "generate",
+    "create_deployable",
+    "create_repository",
+    "delete_repository",
 ]
