@@ -21,7 +21,6 @@ class DeploymentValues(UserDict):
 
     @staticmethod
     def parse_image_tag(image_tag: str):
-        breakpoint()
         registry_url, project_id, tag = image_tag.split("/")
         repository, version = tag.split(":")
 
