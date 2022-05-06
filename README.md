@@ -32,9 +32,9 @@ This quickstart will walk you through deploying a bento into Google Cloud Run. M
     pip install --pre bentoctl
     ```
 
-2. Install AWS  operator
+2. Install the operator
 
-    Bentoctl will install the official Google Cloud Run operator and its dependencies.
+    Bentoctl will install the official Google Cloud Run operator and its dependencies. The Operator contains the Terraform templates and sets up the registries reqired to deploy to GCP.
 
     ```bash
     bentoctl operator install gcp-cloud-run
@@ -85,7 +85,7 @@ This quickstart will walk you through deploying a bento into Google Cloud Run. M
     
 5. Apply Deployment with Terraform
 
-   1. Initialize terraform project. This installs the AWS provider and sets up the terraform folders.
+   1. Initialize terraform project. This installs the Google Cloud provider and sets up the terraform folders.
         ```bash
         terraform init
         ```
