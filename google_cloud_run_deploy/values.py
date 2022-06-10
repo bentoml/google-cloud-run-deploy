@@ -1,7 +1,5 @@
 from collections import UserDict
 
-from google_cloud_run_deploy.schema import OPERATOR_SCHEMA
-
 DEPLOYMENT_PARAMS_WARNING = """# This file is maintained automatically by 
 # "bentoctl generate" and "bentoctl build" commands. 
 # Manual edits may be lost the next time these commands are run.
