@@ -153,7 +153,7 @@ resource "google_cloud_run_service_iam_member" "run_all_users" {
 # Output value definitions
 ################################################################################
 
-output "Endpoint" {
+output "endpoint" {
   description = "Base URL for API Gateway stage."
 
   value = google_cloud_run_service.run_service.status[0].url
