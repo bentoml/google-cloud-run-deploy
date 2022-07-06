@@ -1,9 +1,9 @@
+import json
 import os
 import shutil
 import sys
 import tempfile
 import time
-import json
 
 import requests
 from classifier import TestService
@@ -25,15 +25,15 @@ class Setup:
 
         # make config file
         config = {
-          "project_id": "bentoml-316710",
-          "region": "us-central1",
-          "port": 5001,
-          "min_instances": 0,
-          "max_instances": 1,
-          "memory": "512Mi",
-          "cpu": 1,
-          "allow_unauthenticated": True,
-          "platform": "managed"
+            "project_id": "bentoml-316710",
+            "region": "us-central1",
+            "port": 5001,
+            "min_instances": 0,
+            "max_instances": 1,
+            "memory": "512Mi",
+            "cpu": 1,
+            "allow_unauthenticated": True,
+            "platform": "managed",
         }
 
         self.config = config
