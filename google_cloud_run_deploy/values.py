@@ -1,7 +1,7 @@
 from collections import UserDict
 
-DEPLOYMENT_PARAMS_WARNING = """# This file is maintained automatically by 
-# "bentoctl generate" and "bentoctl build" commands. 
+DEPLOYMENT_PARAMS_WARNING = """# This file is maintained automatically by
+# "bentoctl generate" and "bentoctl build" commands.
 # Manual edits may be lost the next time these commands are run.
 
 """
@@ -35,6 +35,8 @@ class DeploymentValues(UserDict):
     def generate_terraform_tfvars_file(self, file_path):
         params = []
         for param_name, param_value in self.items():
+            if param_name == "bentoml_config_options":
+                param_value = param_value.replace("\n", ",")
             params.append(f'{param_name} = "{param_value}"')
 
         with open(file_path, "w") as params_file:
