@@ -1,3 +1,6 @@
+from email.policy import default
+
+
 OPERATOR_SCHEMA = {
     "project_id": {
         "required": True,
@@ -43,6 +46,13 @@ OPERATOR_SCHEMA = {
         "coerce": int,
         "default": 1,
         "help_message": "CPU cores for each available instance. Note: container instances only get CPU during request processing and startup. Read more https://cloud.google.com/run/docs/configuring/cpu-allocation",
+    },
+    "bentoml_config_options": {
+        "required": True,
+        "type": "string",
+        "coerce": str,
+        "default": "",
+        "help_message": "Used to set the `BENTOML_CONFIG_OPTIONS` envirmonmental variable. Read more: https://docs.bentoml.org/en/latest/guides/configuration.html#overrding-configuration-with-environment-variables",
     },
 }
 

@@ -131,3 +131,4 @@ The required configuration is:
 - `max_instances`: The maximum number of instances Cloud Run should scale up to under load. Check the [dcos](https://cloud.google.com/run/docs/configuring/max-instances) on how to configure it
 - `memory`: The RAM that should be available for each instance. If your model uses more than the specified RAM, it will be terminated. Check the [docs](https://cloud.google.com/run/docs/configuring/memory-limits)
 - `cpu`: The number of CPUs needed for each instance. Check the [docs](https://cloud.google.com/run/docs/configuring/cpu) for more info
+- `bentoml_config_options`: Used to set the `BENTOML_CONFIG_OPTIONS` environment variable. Check the [docs](https://docs.bentoml.org/en/latest/guides/configuration.html#overrding-configuration-with-environment-variables) for more info

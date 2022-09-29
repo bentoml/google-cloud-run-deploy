@@ -80,6 +80,12 @@ variable "cpu" {
   default     = 1
 }
 
+variable "bentoml_config_options" {
+  description = "Used to set the `BENTOML_CONFIG_OPTIONS` environment variable"
+  type        = string
+  default     = ""
+}
+
 ################################################################################
 # Resource definitions
 ################################################################################
@@ -117,6 +123,10 @@ resource "google_cloud_run_service" "run_service" {
         env {
           name  = "BENTOML_PORT"
           value = var.port
+        }
+        env {
+          name  = "BENTOML_CONFIG_OPTIONS"
+          value = var.bentoml_config_options
         }
         ports {
           container_port = var.port
