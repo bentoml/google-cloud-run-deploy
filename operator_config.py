@@ -1,6 +1,3 @@
-from email.policy import default
-
-
 OPERATOR_SCHEMA = {
     "project_id": {
         "required": True,
