@@ -118,10 +118,9 @@ resource "google_cloud_run_service" "run_service" {
     }
 
     spec {
+      container_concurrency = var.max_concurrency
       containers {
         image = "${data.google_container_registry_image.bento_service.image_url}:${var.image_version}"
-
-        container_concurrency = var.max_concurrency
 
         env {
           name  = "BENTOML_PORT"
