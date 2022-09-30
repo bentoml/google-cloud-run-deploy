@@ -45,7 +45,7 @@ OPERATOR_SCHEMA = {
         "help_message": "CPU cores for each available instance. Note: container instances only get CPU during request processing and startup by default. Read more https://cloud.google.com/run/docs/configuring/cpu-allocation",
     },
     "cpu_always_allocated": {
-        "required": True,
+        "required": False,
         "type": "boolean",
         "coerce": bool,
         "default": False,
