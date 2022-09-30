@@ -51,6 +51,14 @@ OPERATOR_SCHEMA = {
         "default": 1,
         "help_message": "CPU cores for each available instance. Note: container instances only get CPU during request processing and startup. Read more https://cloud.google.com/run/docs/configuring/cpu-allocation",
     },
+    "invokers": {
+        "required": False,
+        "type": "list",
+        "schema": {"type": "string"},
+        "coerce": list,
+        "default": ["allUsers"],
+        "help_message": "The principals or groups to grant the ability to invoke the service. Read more https://cloud.google.com/run/docs/securing/managing-access",
+    },
 }
 
 OPERATOR_NAME = "google-cloud-run"
