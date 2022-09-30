@@ -80,6 +80,12 @@ variable "cpu" {
   default     = 1
 }
 
+variable "max_concurrency" {
+  description = "The the maximum concurrent requests per instance"
+  type        = number
+  default     = 80
+}
+
 ################################################################################
 # Resource definitions
 ################################################################################
@@ -114,6 +120,9 @@ resource "google_cloud_run_service" "run_service" {
     spec {
       containers {
         image = "${data.google_container_registry_image.bento_service.image_url}:${var.image_version}"
+
+        container_concurrency = var.max_concurrency
+
         env {
           name  = "BENTOML_PORT"
           value = var.port
