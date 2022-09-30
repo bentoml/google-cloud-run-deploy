@@ -30,6 +30,13 @@ OPERATOR_SCHEMA = {
         "default": 1,
         "help_message": "Maximum number of instances the deployment should scale to serve traffic. Note: keeping a reasonable number of instances can help control billing costs. Read more https://cloud.google.com/run/docs/configuring/max-instances",
     },
+    "max_concurrency": {
+        "required": True,
+        "type": "integer",
+        "coerce": int,
+        "default": 80,
+        "help_message": "The maximum number of requests that can be processed simultaneously by a given container instance. Read more https://cloud.google.com/run/docs/configuring/concurrency",
+    },
     "memory": {
         "required": True,
         "type": "string",
