@@ -80,6 +80,11 @@ variable "cpu" {
   default     = 1
 }
 
+variable cpu_always_allocated {
+  description = "Whether CPU cores are always allocated"
+  type        = bool
+  default     = false
+
 variable "max_concurrency" {
   description = "The the maximum concurrent requests per instance"
   type        = number
@@ -114,6 +119,8 @@ resource "google_cloud_run_service" "run_service" {
       annotations = {
         "autoscaling.knative.dev/minScale" = var.min_instances
         "autoscaling.knative.dev/maxScale" = var.max_instances
+
+        "run.googleapis.com/cpu-throttling": "${var.cpu_always_allocated}"
       }
     }
 

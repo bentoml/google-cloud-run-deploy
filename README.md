@@ -132,3 +132,4 @@ The required configuration is:
 - `max_concurrency`: The maximum number of requests that can be processed simultaneously by a given container instance. Check the [docs](https://cloud.google.com/run/docs/configuring/concurrency) on how to configure it
 - `memory`: The RAM that should be available for each instance. If your model uses more than the specified RAM, it will be terminated. Check the [docs](https://cloud.google.com/run/docs/configuring/memory-limits)
 - `cpu`: The number of CPUs needed for each instance. Check the [docs](https://cloud.google.com/run/docs/configuring/cpu) for more info
+- `cpu_always_allocated`: Setting the CPU to be always allocated can be useful for running short-lived background tasks and other asynchronous processing tasks. Check the [docs](https://cloud.google.com/run/docs/configuring/cpu-allocation) for more info
