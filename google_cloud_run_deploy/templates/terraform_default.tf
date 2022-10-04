@@ -80,6 +80,11 @@ variable "cpu" {
   default     = 1
 }
 
+variable cpu_always_allocated {
+  description = "Whether CPU cores are always allocated"
+  type        = bool
+  default     = false
+
 variable "max_concurrency" {
   description = "The the maximum concurrent requests per instance"
   type        = number
@@ -120,14 +125,15 @@ resource "google_cloud_run_service" "run_service" {
       annotations = {
         "autoscaling.knative.dev/minScale" = var.min_instances
         "autoscaling.knative.dev/maxScale" = var.max_instances
+
+        "run.googleapis.com/cpu-throttling": "${var.cpu_always_allocated}"
       }
     }
 
     spec {
+      container_concurrency = var.max_concurrency
       containers {
         image = "${data.google_container_registry_image.bento_service.image_url}:${var.image_version}"
-
-        container_concurrency = var.max_concurrency
 
         env {
           name  = "BENTOML_PORT"
