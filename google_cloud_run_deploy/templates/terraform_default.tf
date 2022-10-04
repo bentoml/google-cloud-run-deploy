@@ -91,6 +91,12 @@ variable "max_concurrency" {
   default     = 80
 }
 
+variable "invokers" {
+  description = "The principals or groups to grant the ability to invoke the service"
+  type        = list(string)
+  default     = ["allUsers"]
+}
+
 ################################################################################
 # Resource definitions
 ################################################################################
@@ -156,12 +162,11 @@ resource "google_cloud_run_service" "run_service" {
   depends_on = [google_project_service.run_api]
 }
 
-# Allow unauthenticated users to invoke the service
-resource "google_cloud_run_service_iam_member" "run_all_users" {
+resource "google_cloud_run_service_iam_binding" "run_all_users" {
   service  = google_cloud_run_service.run_service.name
   location = google_cloud_run_service.run_service.location
   role     = "roles/run.invoker"
-  member   = "allUsers"
+  members = var.invokers
 }
 
 ################################################################################

@@ -133,3 +133,5 @@ The required configuration is:
 - `memory`: The RAM that should be available for each instance. If your model uses more than the specified RAM, it will be terminated. Check the [docs](https://cloud.google.com/run/docs/configuring/memory-limits)
 - `cpu`: The number of CPUs needed for each instance. Check the [docs](https://cloud.google.com/run/docs/configuring/cpu) for more info
 - `cpu_always_allocated`: Setting the CPU to be always allocated can be useful for running short-lived background tasks and other asynchronous processing tasks. Check the [docs](https://cloud.google.com/run/docs/configuring/cpu-allocation) for more info
+- `invokers`: The principals or groups to grant the ability to invoke the service. Check the [docs](https://cloud.google.com/run/docs/securing/managing-access) for more info
+

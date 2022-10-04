@@ -58,6 +58,14 @@ OPERATOR_SCHEMA = {
         "default": False,
         "help_message": "Setting the CPU to be always allocated can be useful for running short-lived background tasks and other asynchronous processing tasks. Read more https://cloud.google.com/run/docs/configuring/cpu-allocation",
     },
+    "invokers": {
+        "required": False,
+        "type": "list",
+        "schema": {"type": "string"},
+        "coerce": list,
+        "default": ["allUsers"],
+        "help_message": "The principals or groups to grant the ability to invoke the service. Read more https://cloud.google.com/run/docs/securing/managing-access",
+    },
 }
 
 OPERATOR_NAME = "google-cloud-run"
