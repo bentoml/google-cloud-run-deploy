@@ -55,7 +55,7 @@ OPERATOR_SCHEMA = {
         "required": False,
         "type": "boolean",
         "coerce": bool,
-        "default": False,
+        "default": True,
         "help_message": "Setting the CPU to be always allocated can be useful for running short-lived background tasks and other asynchronous processing tasks. Read more https://cloud.google.com/run/docs/configuring/cpu-allocation",
     },
     "invokers": {
