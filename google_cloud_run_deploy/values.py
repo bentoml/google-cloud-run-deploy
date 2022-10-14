@@ -38,6 +38,8 @@ class DeploymentValues(UserDict):
         for param_name, param_value in self.items():
             if isinstance(param_value, (dict, list)):
                 write_value = json.dumps(param_value)
+            elif isinstance(param_value, bool):
+                write_value = str(param_value).lower()
             else:
                 write_value = f'"{param_value}"'
             params.append(f'{param_name} = {write_value}')
