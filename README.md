@@ -37,7 +37,7 @@ This quickstart will walk you through deploying a bento into Google Cloud Run. M
     Bentoctl will install the official Google Cloud Run operator and its dependencies. The Operator contains the Terraform templates and sets up the registries reqired to deploy to GCP.
 
     ```bash
-    bentoctl operator install gcp-cloud-run
+    bentoctl operator install google-cloud-run
     ```
 
 3. Initialize deployment with bentoctl
@@ -58,7 +58,7 @@ This quickstart will walk you through deploying a bento into Google Cloud Run. M
 
     api_version: v1
     name: quickstart
-    operator: gcp-cloud-run
+    operator: google-cloud-run
     template: terraform
     spec:
         project_id: bentoml-316710
