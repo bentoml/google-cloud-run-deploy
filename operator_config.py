@@ -41,7 +41,7 @@ OPERATOR_SCHEMA = {
         "required": True,
         "type": "string",
         "coerce": str,
-        "default": "512M",
+        "default": "512Mi",
         "help_message": "RAM for each available instance. Note: if your bento exceeds this amount, GCP will terminate the container instance. Read more https://cloud.google.com/run/docs/configuring/memory-limits [Memory Suffixes: T, G, M, k]",
     },
     "cpu": {
@@ -55,7 +55,7 @@ OPERATOR_SCHEMA = {
         "required": False,
         "type": "boolean",
         "coerce": bool,
-        "default": True,
+        "default": False,
         "help_message": "Setting the CPU to be always allocated can be useful for running short-lived background tasks and other asynchronous processing tasks. Read more https://cloud.google.com/run/docs/configuring/cpu-allocation",
     },
     "invokers": {

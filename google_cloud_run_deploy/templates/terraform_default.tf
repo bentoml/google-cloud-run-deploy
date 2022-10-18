@@ -149,8 +149,8 @@ resource "google_cloud_run_service" "run_service" {
         dynamic "env" {
           for_each = var.env
           content {
-            name  = each.key
-            value = each.value
+            name  = env.key
+            value = env.value
           }
         }
         ports {
