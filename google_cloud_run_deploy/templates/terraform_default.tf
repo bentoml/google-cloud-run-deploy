@@ -98,6 +98,12 @@ variable "invokers" {
   default     = ["allUsers"]
 }
 
+variable "env" {
+  description = "Runtime environment variables"
+  type        = map(string)
+  default     = {}
+}
+
 ################################################################################
 # Resource definitions
 ################################################################################
@@ -139,6 +145,13 @@ resource "google_cloud_run_service" "run_service" {
         env {
           name  = "BENTOML_PORT"
           value = var.port
+        }
+        dynamic "env" {
+          for_each = var.env
+          content {
+            name  = env.key
+            value = env.value
+          }
         }
         ports {
           container_port = var.port
