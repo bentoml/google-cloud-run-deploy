@@ -1,6 +1,8 @@
-<div align="center">
-    <h1>Google Cloud Run Operator</h1>
-</div>
+## ⚠️ BentoCTL project has been deprecated
+
+Plese see the latest BentoML documentation on OCI-container based deployment workflow: https://docs.bentoml.com/
+
+## Google Cloud Run Operator
 
 Cloud Run is Google Cloud's serverless solution for containers. With Cloud Run, you can develop and deploy highly scalable containerized applications on a fully managed serverless platform. Cloud Run is great for running small to medium models since you only pay for the compute you use and it is super scalable.
 
